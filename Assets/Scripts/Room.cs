@@ -17,5 +17,8 @@ public class Room
     // room name
     public string name;
 
+    // room description
+    public string description;
+
 
 } // end of class
