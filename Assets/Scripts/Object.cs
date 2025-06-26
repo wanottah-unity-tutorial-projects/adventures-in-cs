@@ -1,4 +1,5 @@
 
+using UnityEditor;
 using UnityEngine;
 
 
@@ -9,6 +10,18 @@ public class Object
 
     // description of object - room, character, pickup
     private string _description;
+
+
+
+    // 'Object's' object constructor
+    // initialise the 'Object's' parameters
+    public Object(string objectName, string objectDescription)
+    {
+        // and assign them to the Object's name and description
+        _name = objectName;
+
+        _description = objectDescription;
+    }
 
 
 

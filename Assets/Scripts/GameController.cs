@@ -27,6 +27,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private Button westButton;
 
 
+
     // declare new room objects to create a map
     Room room0;
 
@@ -41,9 +42,9 @@ public class GameController : MonoBehaviour
     Room[] map;
 
 
+    // declare a player object
+    private Character _player;
 
-    // player's current room
-    private int currentRoom;
 
 
 
@@ -61,13 +62,13 @@ public class GameController : MonoBehaviour
     private void InitialiseGame()
     {
         // create the new room objects
-        room0 = new Room();
+        room0 = new Room("Troll Room", "a dark, dank room that smells of troll", -1, 2, 1, -1);
 
-        room1 = new Room();
+        room1 = new Room("Forest", "a light, airy forest shimmering with sunlight", -1, -1, -1, 0);
 
-        room2 = new Room();
+        room2 = new Room("Cave", "a vast cave with walls covered by luminous moss", 0, -1, 3, -1);
 
-        room3 = new Room();
+        room3 = new Room("Dungeon", "a gloomy dungeon. Rats scurry across its floor", -1, -1, -1, 2);
 
 
         // initialise the map array
@@ -84,50 +85,8 @@ public class GameController : MonoBehaviour
         map[3] = room3;
 
 
-        // initialise the room data
-        // room 0
-        room0.name = "Troll Room";
-
-        room0.description = "a dark, dank room that smells of troll";
-
-        room0.n = -1;
-        room0.s = 2;
-        room0.e = 1;
-        room0.w = -1;
-
-        // room 1
-        room1.name = "Forest";
-
-        room1.description = "a light, airy forest shimmering with sunlight";
-
-        room1.n = -1;
-        room1.s = -1;
-        room1.e = -1;
-        room1.w = 0;
-
-        // room 2
-        room2.name = "Cave";
-
-        room2.description = "a vast cave with walls covered by luminous moss";
-
-        room2.n = 0;
-        room2.s = -1;
-        room2.e = 3;
-        room2.w = -1;
-
-        // room 3
-        room3.name = "Dungeon";
-
-        room3.description = "a gloomy dungeon. Rats scurry across its floor";
-
-        room3.n = -1;
-        room3.s = -1;
-        room3.e = -1;
-        room3.w = 2;
-
-
         // set player's current room
-        currentRoom = 0;
+        _player = new Character("You", "The Player", room0);
     }
 
 
@@ -147,7 +106,7 @@ public class GameController : MonoBehaviour
 
     private void StartGame()
     {
-        outputText.text = $"Welcome to the Great Adventure!\nYou are in the {map[currentRoom].name}.  It is {map[currentRoom].description}\n";
+        outputText.text = $"Welcome to the Great Adventure!\nYou are in the {_player.Location.Name}.  It is {_player.Location.Description}\n";
 
         outputText.text += "Where do you want to go now?\n";
 
@@ -157,7 +116,7 @@ public class GameController : MonoBehaviour
 
     private void MovePlayer(int newRoom)
     {
-        // if the new room to move to equals -1
+        // if the new room to move to cannot be reached
         if (newRoom == -1)
         {
             // then display a message to in say no exit in that direction
@@ -167,42 +126,42 @@ public class GameController : MonoBehaviour
         // otherwise
         else
         {
-            // move to the new room
-            currentRoom = newRoom;
+            // move player to the new room
+            _player.Location = map[newRoom];
 
             // and display the room description
-            outputText.text = $"You are now in the {map[currentRoom].name}\n";
+            outputText.text = $"You are now in the {_player.Location.Name}\n";
         }
     }
 
 
     private void LookButton()
     {
-        outputText.text = $"You are in the {map[currentRoom].name}.  It is {map[currentRoom].description}\n";
+        outputText.text = $"You are in the {_player.Location.Name}.  It is {_player.Location.Description}\n";
     }
 
 
     private void NorthButton()
     {
-        MovePlayer(map[currentRoom].n);
+        MovePlayer(_player.Location.N);
     }
 
 
     private void SouthButton()
     {
-        MovePlayer(map[currentRoom].s);
+        MovePlayer(_player.Location.S);
     }
 
 
     private void EastButton()
     {
-        MovePlayer(map[currentRoom].e);
+        MovePlayer(_player.Location.E);
     }
 
 
     private void WestButton()
     {
-        MovePlayer(map[currentRoom].w);
+        MovePlayer(_player.Location.W);
     }
 
 
